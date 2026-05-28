@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import path from "path";
-import { extractZipFile } from "../utils/zipExtractor.js";
+import { extractZipFile } from "../utils/unzipper.js";
 
 export class FileController {
   public static unzipFile = async (
