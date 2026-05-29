@@ -25,6 +25,7 @@ export class FileController {
         .status(200)
         .json({ message: "File uploaded successfully", filePath });
     } catch (err) {
+      console.error(err);
       next(err);
     }
   };
