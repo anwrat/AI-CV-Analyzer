@@ -11,10 +11,22 @@ export interface AnalysisOutput {
   Address: string;
   TotalExperience: string;
   Skills: string[];
-  EducationDetails: string[];
+  EducationDetails: {
+    Degree: string;
+    Institution: string;
+    Year: string;
+  }[];
   Certifications: string[];
-  ProjectDetails: string[];
-  PreviousCompanieswithDuration: string[];
+  ProjectDetails: {
+    Name: string;
+    Description: string;
+  }[];
+  PreviousCompanieswithDuration: {
+    Company: string;
+    StartDate: string;
+    EndDate: string;
+    Role: string;
+  }[];
   AICVScore: number;
   SkillMatchPercentage: number;
   ExperienceMatchPercentage: number;

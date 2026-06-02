@@ -81,21 +81,33 @@ ${extraContext || ""}
 Required JSON Schema:
 
 {
-  "Name": "",
-  "Email": "",
-  "Phone": "",
-  "Address": "",
-  "TotalExperience": "",
-  "Skills": [],
-  "EducationDetails": [],
-  "Certifications": [],
-  "ProjectDetails": [],
-  "PreviousCompanieswithDuration": [],
-  "AICVScore": 0,
-  "SkillMatchPercentage": 0,
-  "ExperienceMatchPercentage": 0,
-  "MissingSkills": [],
-  "AISummary": ""
+  Name: string;
+  Email: string;
+  Phone: string;
+  Address: string;
+  TotalExperience: string;
+  Skills: string[];
+  EducationDetails: {
+    Degree: string;
+    Institution: string;
+    Year: string;
+  }[];
+  Certifications: string[];
+  ProjectDetails: {
+    Name: string;
+    Description: string;
+  }[];
+  PreviousCompanieswithDuration: {
+    Company: string;
+    StartDate: string;
+    EndDate: string;
+    Role: string;
+  }[];
+  AICVScore: number;
+  SkillMatchPercentage: number;
+  ExperienceMatchPercentage: number;
+  MissingSkills: string[];
+  AISummary: string;
 }`;
   return prompt;
 };
