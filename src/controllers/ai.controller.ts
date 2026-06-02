@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { getSimpleResponse } from "../utils/ollama.js";
+import { getSimpleResponse, AICVanalyse } from "../utils/ollama.js";
 import { parsePDF } from "../utils/pdfparse.js";
 import { normalizeText } from "../utils/normalizer.js";
+import { buildPrompt } from "../utils/buildprompt.js";
 
 export class AIController {
   public static generateResponse = async (
@@ -25,6 +26,7 @@ export class AIController {
     next: NextFunction,
   ) => {
     try {
+      const { jobTitle, jobDescription, extraContext = "" } = req.body;
       const files = req.files as Express.Multer.File[];
       if (!files || files.length === 0) {
         return res.status(400).json({ message: "No files uploaded" });
@@ -37,10 +39,18 @@ export class AIController {
         }
         const parsedText = await parsePDF(filePath);
         const normalizedText = normalizeText(parsedText);
-        results.push({ fileName: file.originalname, content: normalizedText });
+        const prompt = buildPrompt(
+          {
+            jobTitle,
+            jobDescription,
+            cvContent: normalizedText,
+          },
+          extraContext,
+        );
+        const analysisResult = await AICVanalyse(prompt);
+        console.log(analysisResult);
       }
-      console.log(results);
-      return res.status(200).json({ message: "Data parsed from CV" });
+      return res.status(200).json({ message: "AI analysis complete" });
     } catch (err) {
       console.error(err);
       next(err);
