@@ -1,25 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
-import { getSimpleResponse, AICVanalyse } from "../utils/ollama.js";
+import { AICVanalyse } from "../utils/ollama.js";
 import { parsePDF } from "../utils/pdfparse.js";
 import { normalizeText } from "../utils/normalizer.js";
 import { buildPrompt } from "../utils/buildprompt.js";
 
 export class AIController {
-  public static generateResponse = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    try {
-      const { prompt } = req.body;
-      const response = await getSimpleResponse(prompt);
-      return res.status(200).json({ response });
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  };
-
   public static analyzeCV = async (
     req: Request,
     res: Response,

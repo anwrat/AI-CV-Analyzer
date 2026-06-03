@@ -4,5 +4,4 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 export const aiRouter = Router();
 
-aiRouter.post("/generate", AIController.generateResponse);
 aiRouter.post("/analyze-cv", upload.array("file"), AIController.analyzeCV);
