@@ -1,32 +1,29 @@
-import type { Request, Response, NextFunction } from "express";
 import path from "path";
 import { extractZipFile } from "../utils/unzipper.js";
 
 export class FileController {
-  public static unzipFile = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  public static unzipFile = async (call: any, callback: any) => {
     try {
-      const filePath = req.file?.path;
+      const filePath = call.request.filePath;
       if (!filePath) {
-        return res.status(400).json({ message: "No file uploaded" });
+        return callback({ message: "No file path provided" });
       }
-      const fileExt = path.extname(req.file?.originalname!);
-      if (fileExt === ".zip") {
-        const outputDir = path.join(
-          path.dirname(filePath),
-          path.basename(filePath, ".zip"),
-        );
-        extractZipFile(filePath, outputDir);
+      console.log("File Path from gRPC request: ", filePath);
+      const fileExt = path.extname(filePath);
+      if (fileExt !== ".zip") {
+        return callback({
+          message: "Invalid file type. Only .zip files are allowed.",
+        });
       }
-      return res
-        .status(200)
-        .json({ message: "File uploaded successfully", filePath });
-    } catch (err) {
+      const outputDir = path.join(
+        path.dirname(filePath),
+        path.basename(filePath, ".zip"),
+      );
+      await extractZipFile(filePath, outputDir);
+      return callback({ message: "File unzipped successfully" });
+    } catch (err: any) {
       console.error(err);
-      next(err);
+      callback({ message: "Error unzipping file", error: err.message });
     }
   };
 }
