@@ -20,7 +20,7 @@ export class FileController {
         path.basename(filePath, ".zip"),
       );
       await extractZipFile(filePath, outputDir);
-      return callback({ message: "File unzipped successfully" });
+      return callback(null, { message: "File unzipped successfully" });
     } catch (err: any) {
       console.error(err);
       callback({ message: "Error unzipping file", error: err.message });

@@ -34,4 +34,23 @@ export class AnalyzerClient {
       });
     });
   }
+
+  public static analyzeCVs(
+    jobTitle: string,
+    jobDescription: string,
+    extraContext: string,
+    filePaths: string[],
+  ) {
+    return new Promise((resolve, reject) => {
+      client.AnalyzeCVs(
+        { jobTitle, jobDescription, extraContext, filePaths },
+        (err: any, response: any) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(response);
+        },
+      );
+    });
+  }
 }

@@ -3,6 +3,7 @@ import protoLoader from "@grpc/proto-loader";
 import path from "path";
 import { fileURLToPath } from "url";
 import { FileController } from "../controllers/file.controller.js";
+import { AIController } from "../controllers/ai.controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,4 +24,5 @@ export const grpcServer = new grpc.Server();
 
 grpcServer.addService(analyzerPackage!.AnalyzerService.service, {
   UploadAndUnzip: FileController.unzipFile,
+  AnalyzeCVs: AIController.analyzeCV,
 });
