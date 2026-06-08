@@ -1,4 +1,4 @@
-import { AICVanalyse } from "../utils/ollama.js";
+import { AICVanalyse } from "../services/aiServices.js";
 import { parsePDF } from "../utils/pdfparse.js";
 import { normalizeText } from "../utils/normalizer.js";
 import { buildPrompt } from "../utils/buildprompt.js";

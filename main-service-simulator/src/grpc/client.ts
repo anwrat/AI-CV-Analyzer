@@ -19,7 +19,7 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition) as any;
 const analyzerPackage = protoDescriptor.analyzer;
 
 const client = new analyzerPackage!.AnalyzerService(
-  "localhost:50051",
+  "localhost:3000",
   grpc.credentials.createInsecure(),
 );
 
