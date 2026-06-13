@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 // const storage = multer.memoryStorage();
 
 export const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   fileFilter: function (req, file, cb) {
     const ext = path.extname(file.originalname);
     if (ext !== ".zip" && ext !== ".pdf") {

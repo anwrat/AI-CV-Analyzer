@@ -19,8 +19,9 @@ message UploadResponse {
 message AnalyzeCVRequest {
   string jobTitle = 1;
   string jobDescription = 2;
-  string extraContext = 3;
-  repeated string filePaths = 4;
+  repeated string requiredSkills = 3;
+  string extraContext = 4;
+  repeated string fileKeys = 5;
 }
 
 message AnalysisResult {

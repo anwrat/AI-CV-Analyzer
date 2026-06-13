@@ -38,12 +38,13 @@ export class AnalyzerClient {
   public static analyzeCVs(
     jobTitle: string,
     jobDescription: string,
+    requiredSkills: string[],
     extraContext: string,
-    filePaths: string[],
+    fileKeys: string[],
   ) {
     return new Promise((resolve, reject) => {
       client.AnalyzeCVs(
-        { jobTitle, jobDescription, extraContext, filePaths },
+        { jobTitle, jobDescription, extraContext, fileKeys },
         (err: any, response: any) => {
           if (err) {
             return reject(err);

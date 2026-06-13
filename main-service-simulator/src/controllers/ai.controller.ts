@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { AnalyzerClient } from "../grpc/client.js";
+import { uploadToS3 } from "../services/storage.service.js";
 
 export class AIController {
   public static analyzeCV = async (
@@ -8,17 +9,26 @@ export class AIController {
     next: NextFunction,
   ) => {
     try {
-      const { jobTitle, jobDescription, extraContext = "" } = req.body;
+      const {
+        jobTitle,
+        jobDescription,
+        requiredSkills,
+        extraContext = "",
+      } = req.body;
       const files = req.files as Express.Multer.File[];
       if (!files || files.length === 0) {
         return res.status(400).json({ message: "No files uploaded" });
       }
-      const filePaths = files.map((file) => file.path);
+      const fileKeys = await Promise.all(
+        files.map((f) => uploadToS3(f.buffer, f.originalname)),
+      );
+      console.log(fileKeys);
       const analysisResult = (await AnalyzerClient.analyzeCVs(
         jobTitle,
         jobDescription,
+        requiredSkills,
         extraContext,
-        filePaths,
+        fileKeys,
       )) as any;
       const formattedResult = analysisResult.results.map((item: any) => {
         try {
