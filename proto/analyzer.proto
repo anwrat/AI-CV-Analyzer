@@ -20,13 +20,16 @@ message AnalyzeCVRequest {
   string jobTitle = 1;
   string jobDescription = 2;
   repeated string requiredSkills = 3;
-  string extraContext = 4;
-  repeated string fileKeys = 5;
+  int32 experienceLevel = 4;
+  string extraContext = 5;
+  repeated string fileKeys = 6;
 }
 
 message AnalysisResult {
   string fileName = 1;
   string result = 2;
+  string status = 3;
+  string error = 4;
 }
 
 message AnalyzeCVResponse {

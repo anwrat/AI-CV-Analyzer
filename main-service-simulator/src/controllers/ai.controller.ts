@@ -13,8 +13,14 @@ export class AIController {
         jobTitle,
         jobDescription,
         requiredSkills,
+        experienceLevel,
         extraContext = "",
       } = req.body;
+      console.log({
+        requiredSkills,
+        type: typeof requiredSkills,
+        isArray: Array.isArray(requiredSkills),
+      });
       const files = req.files as Express.Multer.File[];
       if (!files || files.length === 0) {
         return res.status(400).json({ message: "No files uploaded" });
@@ -26,24 +32,29 @@ export class AIController {
       const analysisResult = (await AnalyzerClient.analyzeCVs(
         jobTitle,
         jobDescription,
-        requiredSkills,
+        JSON.parse(requiredSkills),
+        Number(experienceLevel),
         extraContext,
         fileKeys,
       )) as any;
+      console.log(analysisResult);
       const formattedResult = analysisResult.results.map((item: any) => {
         try {
           return {
             filename: item.fileName,
             analysis: JSON.parse(item.result),
+            status: item.status,
           };
         } catch (parseErr) {
           return {
             filename: item.fileName,
             analysis: item.result,
+            status: item.status,
+            error: item.error,
           };
         }
       });
-      console.log(formattedResult);
+      // console.log(formattedResult);
       return res
         .status(200)
         .json({ message: "AI analysis complete", data: formattedResult });

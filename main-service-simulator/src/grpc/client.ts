@@ -39,12 +39,20 @@ export class AnalyzerClient {
     jobTitle: string,
     jobDescription: string,
     requiredSkills: string[],
+    experienceLevel: number,
     extraContext: string,
     fileKeys: string[],
   ) {
     return new Promise((resolve, reject) => {
       client.AnalyzeCVs(
-        { jobTitle, jobDescription, extraContext, fileKeys },
+        {
+          jobTitle,
+          jobDescription,
+          requiredSkills,
+          experienceLevel,
+          extraContext,
+          fileKeys,
+        },
         (err: any, response: any) => {
           if (err) {
             return reject(err);
