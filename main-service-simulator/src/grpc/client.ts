@@ -2,6 +2,7 @@ import grpc from "@grpc/grpc-js";
 import protoLoader from "@grpc/proto-loader";
 import path from "path";
 import { fileURLToPath } from "url";
+import config from "../config/env.config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +18,9 @@ const PROTO_PATH = path.join(
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition) as any;
 const analyzerPackage = protoDescriptor.analyzer;
+
+const metadata = new grpc.Metadata();
+metadata.add("api-key", config.api_key_grpc);
 
 const client = new analyzerPackage!.AnalyzerService(
   "localhost:3000",
@@ -53,6 +57,7 @@ export class AnalyzerClient {
           extraContext,
           fileKeys,
         },
+        metadata,
         (err: any, response: any) => {
           if (err) {
             return reject(err);
