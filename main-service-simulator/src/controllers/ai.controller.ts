@@ -23,6 +23,7 @@ export class AIController {
       const fileKeys = await Promise.all(
         files.map((f) => uploadToS3(f.buffer, f.originalname)),
       );
+      console.log(fileKeys);
       const analysisResponse = (await AnalyzerClient.analyzeCVs(
         jobTitle,
         jobDescription,
